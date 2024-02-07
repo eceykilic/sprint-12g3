@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import api from './api';
+import React from 'react';
+import useFetchData from './useFetchData';
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    api.get('/products')
-      .then(response => setProducts(response.data))
-      .catch(error => console.error('Error fetching data:', error));
-  }, []);
+    const { data: products, loading, error } = useFetchData('/products');
+  
+    if (loading) {
+      return <p>Loading...</p>;
+    }
+  
+    if (error) {
+      return <p>Error: {error.message}</p>;
+    }
 
   return (
     <div>
