@@ -1,5 +1,5 @@
 import React from 'react';
-import useFetchData from './useFetchData';
+import {useFetchData} from './useFetchData.jsx';
 
 const ProductList = () => {
     const { data: products, loading, error } = useFetchData('/products');

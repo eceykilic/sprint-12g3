@@ -1,28 +1,22 @@
-// useFetchData.js
 import { useState, useEffect } from 'react';
 import api from './api';
 
-const useFetchData = (url) => {
-  const [data, setData] = useState(null);
+export const useFetchData = (url) => {
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(url);
+    api.get(url)
+      .then((response) => {
         setData(response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
         setLoading(false);
-      }
-    };
-
-    fetchData();
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
   }, [url]);
 
   return { data, loading, error };
 };
-
-export default useFetchData;
