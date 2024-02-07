@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+// Create an Axios instance with a base URL and default headers
+const api = axios.create({
+  baseURL: 'https://fakestoreapi.com',
+  headers: {
+    'Content-Type': 'application/json',
+    // other headers
+  },
+});
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-      .then(res => res.json())
-      .then(json => setProducts(json));
+    // Use the Axios instance to make the API request
+    api.get('/products')
+      .then(response => setProducts(response.data))
+      .catch(error => console.error('Error fetching data:', error));
   }, []);
 
   return (
@@ -19,6 +30,7 @@ const ProductList = () => {
             <div className="mt-2">
               <p className="text-gray-200">{product.description}</p>
               <img src={product.image} alt="" className="w-1/3 h-1/3" />
+              <p className="text-gray-300 mt-2">Rating: {product.rating.rate} ({product.rating.count} reviews)</p>
             </div>
           </li>
         ))}
